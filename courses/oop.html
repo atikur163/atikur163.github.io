@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Object Oriented Pattern &amp; Design — atikur163</title>
+<meta name="description" content="10 modules covering OOP fundamentals through the core design patterns, with Java examples.">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <span>atikur163<span class="dot">.</span>courses
+        <small>learning, documented in public</small>
+      </span>
+    </a>
+    <nav class="main-nav">
+      <a href="../index.html">Catalog</a>
+      <a href="oop.html" class="active">OOP &amp; Design</a>
+      <a href="https://github.com/atikur163" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+    <a class="dept-badge" href="ict-dept.html" title="MBSTU, Dept. of ICT">
+      <img src="../assets/logo-ict.svg" alt="MBSTU ICT Department logo">
+      <span class="dl"><b>Dept. of ICT</b><span>MBSTU</span></span>
+    </a>
+  </div>
+</header>
+
+<section class="course-hero">
+  <div class="wrap">
+    <p class="eyebrow">Course</p>
+    <h1>Object Oriented Pattern &amp; Design</h1>
+    <p>A ground-up walk through OOP — from a class's first principles to the design patterns that
+      professional Java codebases are built on. Every module pairs a plain-language explanation with a
+      runnable code example.</p>
+    <div class="course-meta">
+      <span>+ language: <b>Java</b></span>
+      <span>+ modules: <b>10</b></span>
+      <span>+ level: <b>Beginner → Intermediate</b></span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+<div class="course-layout">
+
+  <nav class="module-nav">
+    <div class="mn-head">Modules</div>
+    <ol>
+      <li><a href="#m1"><span class="mi">01</span> Classes &amp; Objects</a></li>
+      <li><a href="#m2"><span class="mi">02</span> Encapsulation</a></li>
+      <li><a href="#m3"><span class="mi">03</span> Inheritance</a></li>
+      <li><a href="#m4"><span class="mi">04</span> Polymorphism</a></li>
+      <li><a href="#m5"><span class="mi">05</span> Abstraction</a></li>
+      <li><a href="#m6"><span class="mi">06</span> SOLID Principles</a></li>
+      <li><a href="#m7"><span class="mi">07</span> Creational Patterns</a></li>
+      <li><a href="#m8"><span class="mi">08</span> Structural Patterns</a></li>
+      <li><a href="#m9"><span class="mi">09</span> Behavioral Patterns</a></li>
+      <li><a href="#m10"><span class="mi">10</span> Case Study</a></li>
+    </ol>
+  </nav>
+
+  <div class="modules">
+
+    <!-- MODULE 1 -->
+    <article class="module" id="m1">
+      <span class="m-index">MODULE 01</span>
+      <h2>Classes &amp; Objects</h2>
+      <p>A <strong>class</strong> is a blueprint — it describes what data an object holds (its fields) and
+        what it can do (its methods). An <strong>object</strong> is one concrete thing built from that
+        blueprint. A <code>Car</code> class might describe that every car has a color and a speed and can
+        accelerate; the specific red car sitting in memory at runtime is the object.</p>
+      <p>Every object you create from the same class shares the same structure but keeps its own copy of
+        the data. That's the whole idea of OOP in one sentence: bundle data and the behavior that acts on
+        it into a single unit.</p>
+      <div class="code-panel">
+        <div class="cp-head"><span>Car.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>public class Car {
+    private String color;
+    private int speed;
+
+    public Car(String color) {
+        this.color = color;
+        this.speed = 0;
+    }
+
+    public void accelerate(int amount) {
+        this.speed += amount;
+    }
+
+    public String describe() {
+        return color + " car moving at " + speed + " km/h";
+    }
+
+    public static void main(String[] args) {
+        Car red = new Car("Red");
+        Car blue = new Car("Blue");
+
+        red.accelerate(40);
+        blue.accelerate(15);
+
+        System.out.println(red.describe());   // Red car moving at 40 km/h
+        System.out.println(blue.describe());  // Blue car moving at 15 km/h
+    }
+}</code></pre>
+      </div>
+      <div class="callout"><b>Note:</b> <code>red</code> and <code>blue</code> are two separate objects built from
+        one <code>Car</code> class — each keeps its own <code>speed</code>.</div>
+    </article>
+
+    <!-- MODULE 2 -->
+    <article class="module" id="m2">
+      <span class="m-index">MODULE 02</span>
+      <h2>Encapsulation</h2>
+      <p><strong>Encapsulation</strong> means hiding an object's internal data and only exposing it through
+        controlled methods. In practice: mark fields <code>private</code>, then provide public
+        <code>get</code>/<code>set</code> methods — or better, methods named after what they actually do —
+        so outside code can never leave the object in an invalid state.</p>
+      <p>Without encapsulation, any code anywhere could set a bank balance to a negative number. With it,
+        the class itself is the only place that's allowed to make that decision, so it can enforce the rule
+        every time.</p>
+      <div class="code-panel">
+        <div class="cp-head"><span>BankAccount.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>public class BankAccount {
+    private double balance;
+
+    public BankAccount(double openingBalance) {
+        this.balance = openingBalance;
+    }
+
+    public void deposit(double amount) {
+        if (amount <= 0) throw new IllegalArgumentException("Deposit must be positive");
+        balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount > balance) throw new IllegalStateException("Insufficient funds");
+        balance -= amount;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public static void main(String[] args) {
+        BankAccount acc = new BankAccount(100);
+        acc.deposit(50);
+        acc.withdraw(30);
+        System.out.println(acc.getBalance()); // 120.0
+        // acc.balance = -500;  // not possible — the field is private
+    }
+}</code></pre>
+      </div>
+      <div class="callout"><b>Note:</b> <code>balance</code> can never be touched directly from outside the class —
+        every change goes through a method that can validate it first.</div>
+    </article>
+
+    <!-- MODULE 3 -->
+    <article class="module" id="m3">
+      <span class="m-index">MODULE 03</span>
+      <h2>Inheritance</h2>
+      <p><strong>Inheritance</strong> lets one class reuse the fields and methods of another. A
+        <code>Car</code> and a <code>Truck</code> are both vehicles — instead of writing the shared logic
+        twice, both extend a common <code>Vehicle</code> class and add only what's specific to them.</p>
+      <p>Use inheritance for a genuine "is-a" relationship (a Truck <em>is a</em> Vehicle). If the
+        relationship is really "has-a" (a Car <em>has a</em> Engine), composition — module 8 — is usually the
+        better fit.</p>
+      <div class="code-panel">
+        <div class="cp-head"><span>Vehicle.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>public class Vehicle {
+    protected String model;
+    protected int speed = 0;
+
+    public Vehicle(String model) {
+        this.model = model;
+    }
+
+    public void accelerate(int amount) {
+        speed += amount;
+    }
+
+    public String status() {
+        return model + " at " + speed + " km/h";
+    }
+}
+
+public class Truck extends Vehicle {
+    private int cargoKg;
+
+    public Truck(String model, int cargoKg) {
+        super(model);          // reuse Vehicle's constructor
+        this.cargoKg = cargoKg;
+    }
+
+    public String status() {
+        return super.status() + ", carrying " + cargoKg + "kg";
+    }
+
+    public static void main(String[] args) {
+        Truck t = new Truck("Volvo FH", 2000);
+        t.accelerate(60);
+        System.out.println(t.status()); // Volvo FH at 60 km/h, carrying 2000kg
+    }
+}</code></pre>
+      </div>
+      <div class="callout"><b>Note:</b> <code>Truck</code> gets <code>accelerate()</code> for free from
+        <code>Vehicle</code>, and only overrides <code>status()</code> to add its own detail.</div>
+    </article>
+
+    <!-- MODULE 4 -->
+    <article class="module" id="m4">
+      <span class="m-index">MODULE 04</span>
+      <h2>Polymorphism</h2>
+      <p><strong>Polymorphism</strong> means the same method call behaves differently depending on the
+        actual object it's called on. If <code>Circle</code> and <code>Square</code> both extend
+        <code>Shape</code> and override <code>area()</code>, you can hold a list of <code>Shape</code> and
+        call <code>area()</code> on each without ever checking what specific shape it is — Java figures out
+        which version to run at runtime.</p>
+      <p>This is what lets you add a brand-new shape later without touching any code that already works with
+        <code>Shape</code>.</p>
+      <div class="code-panel">
+        <div class="cp-head"><span>Shapes.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>public abstract class Shape {
+    public abstract double area();
+}
+
+public class Circle extends Shape {
+    private double radius;
+    public Circle(double radius) { this.radius = radius; }
+    public double area() { return Math.PI * radius * radius; }
+}
+
+public class Square extends Shape {
+    private double side;
+    public Square(double side) { this.side = side; }
+    public double area() { return side * side; }
+}
+
+public class ShapeDemo {
+    public static void main(String[] args) {
+        Shape[] shapes = { new Circle(3), new Square(4) };
+
+        for (Shape s : shapes) {
+            // same call, different behavior per actual object
+            System.out.printf("%.2f%n", s.area());
+        }
+        // 28.27
+        // 16.00
+    }
+}</code></pre>
+      </div>
+      <div class="callout"><b>Note:</b> The loop never checks "is this a Circle or a Square?" — each object
+        knows how to compute its own <code>area()</code>.</div>
+    </article>
+
+    <!-- MODULE 5 -->
+    <article class="module" id="m5">
+      <span class="m-index">MODULE 05</span>
+      <h2>Abstraction — Abstract Classes &amp; Interfaces</h2>
+      <p><strong>Abstraction</strong> means exposing only what a caller needs to know, and hiding how it's
+        actually done. Java gives you two tools for this: an <strong>abstract class</strong> (a partial
+        blueprint that can hold shared code and force subclasses to fill in the rest) and an
+        <strong>interface</strong> (a pure contract — just a list of methods a class promises to implement,
+        with no shared state).</p>
+      <p>Rule of thumb: use an abstract class when related classes share real code; use an interface when
+        unrelated classes just need to promise the same capability — for example, both a
+        <code>Duck</code> and a <code>Plane</code> can implement <code>Flyable</code> even though they share
+        nothing else.</p>
+      <div class="code-panel">
+        <div class="cp-head"><span>Flyable.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>public interface Flyable {
+    void fly();
+}
+
+public class Duck implements Flyable {
+    public void fly() { System.out.println("Duck flaps its wings"); }
+}
+
+public class Plane implements Flyable {
+    public void fly() { System.out.println("Plane fires its engines"); }
+}
+
+public class SkyDemo {
+    public static void main(String[] args) {
+        Flyable[] fliers = { new Duck(), new Plane() };
+        for (Flyable f : fliers) {
+            f.fly();
+        }
+        // Duck flaps its wings
+        // Plane fires its engines
+    }
+}</code></pre>
+      </div>
+      <div class="callout"><b>Note:</b> <code>Duck</code> and <code>Plane</code> share no parent class and no
+        code — only the promise that they can both <code>fly()</code>.</div>
+    </article>
+
+    <!-- MODULE 6 -->
+    <article class="module" id="m6">
+      <span class="m-index">MODULE 06</span>
+      <h2>SOLID Principles</h2>
+      <p>SOLID is five rules of thumb for keeping object-oriented code easy to change without breaking it.</p>
+      <ul>
+        <li><strong>S — Single Responsibility:</strong> a class should have exactly one reason to change.</li>
+        <li><strong>O — Open/Closed:</strong> open for extension, closed for modification — add new behavior
+          without editing existing, working code.</li>
+        <li><strong>L — Liskov Substitution:</strong> a subclass must be usable anywhere its parent class is
+          expected, without breaking anything.</li>
+        <li><strong>I — Interface Segregation:</strong> prefer several small, specific interfaces over one
+          giant one that forces classes to implement methods they don't need.</li>
+        <li><strong>D — Dependency Inversion:</strong> depend on interfaces, not concrete classes, so pieces
+          can be swapped independently.</li>
+      </ul>
+      <p>The example below shows Open/Closed in action: adding a new discount rule never touches
+        <code>PriceCalculator</code>.</p>
+      <div class="code-panel">
+        <div class="cp-head"><span>OpenClosedExample.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>public interface DiscountRule {
+    double apply(double price);
+}
+
+public class NoDiscount implements DiscountRule {
+    public double apply(double price) { return price; }
+}
+
+public class StudentDiscount implements DiscountRule {
+    public double apply(double price) { return price * 0.9; }
+}
+
+// Adding SeasonalDiscount later needs zero changes here:
+public class PriceCalculator {
+    private DiscountRule rule;
+    public PriceCalculator(DiscountRule rule) { this.rule = rule; }
+
+    public double finalPrice(double price) {
+        return rule.apply(price);
+    }
+
+    public static void main(String[] args) {
+        PriceCalculator calc = new PriceCalculator(new StudentDiscount());
+        System.out.println(calc.finalPrice(1000)); // 900.0
+    }
+}</code></pre>
+      </div>
+    </article>
+
+    <!-- MODULE 7 -->
+    <article class="module" id="m7">
+      <span class="m-index">MODULE 07</span>
+      <h2>Creational Patterns — Singleton, Factory, Builder</h2>
+      <p><strong>Creational patterns</strong> deal with one problem: how objects get created, so the rest of
+        the code doesn't have to know the messy details.</p>
+      <ul>
+        <li><strong>Singleton</strong> guarantees a class has exactly one instance, with one global access
+          point — useful for something like an application-wide configuration.</li>
+        <li><strong>Factory</strong> hides the <code>new</code> keyword behind a method, so callers ask for
+          "a Notification" without knowing or caring whether they get an <code>EmailNotification</code> or
+          <code>SmsNotification</code>.</li>
+        <li><strong>Builder</strong> constructs a complex object step by step, which avoids constructors
+          with ten optional parameters.</li>
+      </ul>
+      <div class="code-panel">
+        <div class="cp-head"><span>Singleton.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>public class AppConfig {
+    private static AppConfig instance;
+    private String environment;
+
+    private AppConfig() { this.environment = "production"; }
+
+    public static AppConfig getInstance() {
+        if (instance == null) {
+            instance = new AppConfig();
+        }
+        return instance;
+    }
+
+    public String getEnvironment() { return environment; }
+}</code></pre>
+      </div>
+      <div class="code-panel">
+        <div class="cp-head"><span>NotificationFactory.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>public interface Notification {
+    void send(String message);
+}
+
+public class EmailNotification implements Notification {
+    public void send(String message) { System.out.println("Email: " + message); }
+}
+
+public class SmsNotification implements Notification {
+    public void send(String message) { System.out.println("SMS: " + message); }
+}
+
+public class NotificationFactory {
+    public static Notification create(String type) {
+        return switch (type) {
+            case "email" -> new EmailNotification();
+            case "sms" -> new SmsNotification();
+            default -> throw new IllegalArgumentException("Unknown type: " + type);
+        };
+    }
+
+    public static void main(String[] args) {
+        Notification n = NotificationFactory.create("sms");
+        n.send("Your order has shipped"); // SMS: Your order has shipped
+    }
+}</code></pre>
+      </div>
+    </article>
+
+    <!-- MODULE 8 -->
+    <article class="module" id="m8">
+      <span class="m-index">MODULE 08</span>
+      <h2>Structural Patterns — Adapter, Decorator, Composite</h2>
+      <p><strong>Structural patterns</strong> deal with how classes and objects are wired together into
+        larger structures.</p>
+      <ul>
+        <li><strong>Adapter</strong> converts one class's interface into another one a client expects — a
+          bridge between incompatible interfaces.</li>
+        <li><strong>Decorator</strong> attaches new behavior to an object at runtime by wrapping it, instead
+          of creating a new subclass for every combination of features.</li>
+        <li><strong>Composite</strong> lets you treat a single object and a group of objects the same way —
+          useful for tree structures like a file system.</li>
+      </ul>
+      <p>The example below decorates a plain coffee with add-ons, each wrapping the last.</p>
+      <div class="code-panel">
+        <div class="cp-head"><span>CoffeeDecorator.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>public interface Coffee {
+    double cost();
+    String describe();
+}
+
+public class SimpleCoffee implements Coffee {
+    public double cost() { return 2.0; }
+    public String describe() { return "Coffee"; }
+}
+
+public abstract class CoffeeDecorator implements Coffee {
+    protected Coffee inner;
+    public CoffeeDecorator(Coffee inner) { this.inner = inner; }
+}
+
+public class MilkDecorator extends CoffeeDecorator {
+    public MilkDecorator(Coffee inner) { super(inner); }
+    public double cost() { return inner.cost() + 0.5; }
+    public String describe() { return inner.describe() + " + Milk"; }
+}
+
+public class SyrupDecorator extends CoffeeDecorator {
+    public SyrupDecorator(Coffee inner) { super(inner); }
+    public double cost() { return inner.cost() + 0.7; }
+    public String describe() { return inner.describe() + " + Syrup"; }
+}
+
+public class CafeDemo {
+    public static void main(String[] args) {
+        Coffee order = new SyrupDecorator(new MilkDecorator(new SimpleCoffee()));
+        System.out.println(order.describe() + " = $" + order.cost());
+        // Coffee + Milk + Syrup = $3.2
+    }
+}</code></pre>
+      </div>
+    </article>
+
+    <!-- MODULE 9 -->
+    <article class="module" id="m9">
+      <span class="m-index">MODULE 09</span>
+      <h2>Behavioral Patterns — Observer, Strategy, Command</h2>
+      <p><strong>Behavioral patterns</strong> deal with how objects communicate and share responsibility.</p>
+      <ul>
+        <li><strong>Observer</strong> lets objects subscribe to another object's events, so a change in one
+          place automatically notifies everyone who's listening.</li>
+        <li><strong>Strategy</strong> makes an algorithm swappable — a class holds a reference to a strategy
+          interface, and the specific algorithm is plugged in from outside.</li>
+        <li><strong>Command</strong> wraps a request as an object, so it can be queued, logged, or undone.</li>
+      </ul>
+      <p>Below, an Observer example: a <code>WeatherStation</code> notifies every subscribed display when the
+        temperature changes.</p>
+      <div class="code-panel">
+        <div class="cp-head"><span>WeatherStation.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>import java.util.ArrayList;
+import java.util.List;
+
+public interface Observer {
+    void update(double temperature);
+}
+
+public class WeatherStation {
+    private List&lt;Observer&gt; observers = new ArrayList&lt;&gt;();
+
+    public void subscribe(Observer o) { observers.add(o); }
+
+    public void setTemperature(double temp) {
+        for (Observer o : observers) {
+            o.update(temp);
+        }
+    }
+}
+
+public class PhoneDisplay implements Observer {
+    public void update(double temperature) {
+        System.out.println("Phone shows: " + temperature + "°C");
+    }
+}
+
+public class WeatherDemo {
+    public static void main(String[] args) {
+        WeatherStation station = new WeatherStation();
+        station.subscribe(new PhoneDisplay());
+        station.setTemperature(31.5); // Phone shows: 31.5°C
+    }
+}</code></pre>
+      </div>
+    </article>
+
+    <!-- MODULE 10 -->
+    <article class="module" id="m10">
+      <span class="m-index">MODULE 10</span>
+      <h2>Case Study — Designing a Small System with OOP</h2>
+      <p>This module puts modules 1–9 together in one small, coherent design: a food-delivery order system.
+        The goal isn't more syntax — it's showing how the pieces are <em>chosen</em>, not just used.</p>
+      <ul>
+        <li><strong>Encapsulation</strong> keeps an <code>Order</code>'s total in charge of its own math.</li>
+        <li><strong>Abstraction</strong> via a <code>PaymentMethod</code> interface hides how each payment
+          type actually charges the customer.</li>
+        <li><strong>Strategy</strong> lets the payment method be swapped per order, at runtime.</li>
+        <li><strong>Factory</strong> creates the right <code>PaymentMethod</code> from a plain string, so the
+          rest of the code never touches <code>new</code> directly.</li>
+      </ul>
+      <div class="code-panel">
+        <div class="cp-head"><span>OrderSystem.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
+        <pre><code>import java.util.ArrayList;
+import java.util.List;
+
+public interface PaymentMethod {
+    void pay(double amount);
+}
+
+public class CardPayment implements PaymentMethod {
+    public void pay(double amount) { System.out.println("Charged $" + amount + " to card"); }
+}
+
+public class CashOnDelivery implements PaymentMethod {
+    public void pay(double amount) { System.out.println("Collect $" + amount + " on delivery"); }
+}
+
+public class PaymentFactory {
+    public static PaymentMethod create(String type) {
+        return switch (type) {
+            case "card" -> new CardPayment();
+            case "cod"  -> new CashOnDelivery();
+            default -> throw new IllegalArgumentException("Unknown payment type");
+        };
+    }
+}
+
+public class Order {
+    private List&lt;Double&gt; itemPrices = new ArrayList&lt;&gt;();
+    private PaymentMethod payment;
+
+    public Order(String paymentType) {
+        this.payment = PaymentFactory.create(paymentType);
+    }
+
+    public void addItem(double price) { itemPrices.add(price); }
+
+    public double total() {
+        double sum = 0;
+        for (double p : itemPrices) sum += p;
+        return sum;
+    }
+
+    public void checkout() {
+        payment.pay(total());
+    }
+
+    public static void main(String[] args) {
+        Order order = new Order("card");
+        order.addItem(12.5);
+        order.addItem(7.25);
+        order.checkout(); // Charged $19.75 to card
+    }
+}</code></pre>
+      </div>
+      <div class="callout"><b>Takeaway:</b> none of these patterns were used for their own sake — each one
+        solved a specific "what happens when this changes?" question the design would otherwise run into.</div>
+    </article>
+
+  </div>
+</div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© 2026 atikur163 — built as a learning log, not a finished textbook.</span>
+    <span><a href="https://github.com/atikur163" target="_blank" rel="noopener">github.com/atikur163</a></span>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
