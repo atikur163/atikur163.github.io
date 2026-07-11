@@ -964,49 +964,9 @@ station.subscribe(new PhoneDisplay());
 station.setTemperature(31.5);  // Phone shows: 31.5°C</code></pre>
         </div>
 
-        <h3>Case study — tying it together</h3>
-        <p>A small order system that uses Factory (Creational) to build the right payment method, and
-          Strategy (Behavioral) to let that payment method be swapped per order — while
-          <code>Order</code> itself never touches <code>new</code> directly, per Dependency Inversion.</p>
-        <div class="code-panel">
-          <div class="cp-head"><span>OrderSystem.java</span><div class="cp-dots"><span></span><span></span><span></span></div></div>
-          <pre><code>interface PaymentMethod { void pay(double amount); }
-
-class CardPayment implements PaymentMethod {
-    public void pay(double amount) { System.out.println("Charged $" + amount + " to card"); }
-}
-class CashOnDelivery implements PaymentMethod {
-    public void pay(double amount) { System.out.println("Collect $" + amount + " on delivery"); }
-}
-
-class PaymentFactory {
-    static PaymentMethod create(String type) {
-        return switch (type) {
-            case "card" -> new CardPayment();
-            case "cod"  -> new CashOnDelivery();
-            default -> throw new IllegalArgumentException("Unknown payment type");
-        };
-    }
-}
-
-class Order {
-    private double total = 0;
-    private PaymentMethod payment;
-
-    Order(String paymentType) { this.payment = PaymentFactory.create(paymentType); }
-    void addItem(double price) { total += price; }
-    void checkout() { payment.pay(total); }
-}
-
-Order order = new Order("card");
-order.addItem(12.5);
-order.addItem(7.25);
-order.checkout();  // Charged $19.75 to card</code></pre>
-        </div>
-
-        <div class="callout"><b>Takeaway:</b> no pattern here was used for its own sake — each one answered
-          a specific "what happens when this changes?" question the design would otherwise run into. That's
-          the same question every module in this course has been building toward.</div>
+        <div class="callout"><b>Takeaway:</b> no pattern here was used for its own sake — each one answers a
+          specific "what happens when this changes?" question the design would otherwise run into. That's the
+          same question every module in this course has been building toward.</div>
       </div>
     </article>
 
