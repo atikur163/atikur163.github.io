@@ -83,6 +83,20 @@ img{ max-width: 100%; display:block; }
   padding-bottom: 16px;
   gap: 20px;
 }
+.header-left{
+  display:flex;
+  align-items:center;
+  gap: 14px;
+}
+.univ-logo{
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--paper);
+  padding: 2px;
+}
+
 .brand{
   display:flex;
   align-items:center;
@@ -136,7 +150,7 @@ img{ max-width: 100%; display:block; }
   border-color: var(--line);
   background: var(--ink-2);
 }
-.dept-badge img{ width: 30px; height: 30px; border-radius:50%; }
+.dept-badge img{ width: 32px; height: 32px; border-radius:50%; background: var(--paper); padding: 2px; object-fit: contain; }
 .dept-badge .dl{
   font-family: var(--font-mono);
   font-size: 0.68rem;

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="31" fill="#16273D" stroke="#E2853F" stroke-width="1.5"/>
+  <path d="M32 14 L50 22 L32 30 L14 22 Z" fill="#ECE6D6"/>
+  <path d="M20 26 V38 Q32 46 44 38 V26" fill="none" stroke="#ECE6D6" stroke-width="2"/>
+  <text x="32" y="56" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="600" fill="#E2853F">MBSTU</text>
+</svg>
