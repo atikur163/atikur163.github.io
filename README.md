@@ -40,10 +40,7 @@ git push -u origin main
 
 `assets/logo-ict.png` — এইটা তোমার দেওয়া **আসল** ICT dept লোগো, হোমপেজের হেডারে ডান পাশে এবং প্রতিটা course পেজের হেডারে বসানো আছে। বদলাতে চাইলে নতুন ফাইল `assets/` ফোল্ডারে রেখে `<img src="assets/logo-ict.png">` (বা `../assets/logo-ict.png`) এর filename বদলে দাও।
 
-`assets/logo-university.svg` — এইটা **প্লেসহোল্ডার**, আসল MBSTU লোগো এখনো বসানো হয়নি (আমার কাছে ফাইলটা ছিল না)। হোমপেজের হেডারে বাম পাশে বসানো আছে। আসল লোগো পেলে:
-
-1. লোগো ফাইলটা (`.png`/`.svg`) `assets/` ফোল্ডারে রাখো, যেমন `assets/logo-university.png`।
-2. `index.html`-এ `<img class="univ-logo" src="assets/logo-university.svg">` এই লাইনের filename বদলে দাও।
+`assets/logo-university.png` — এইটা তোমার দেওয়া **আসল** MBSTU লোগো, হোমপেজের হেডারে বাম পাশে বসানো আছে। বদলাতে চাইলে নতুন ফাইল `assets/` ফোল্ডারে রেখে `index.html`-এর `<img class="univ-logo" src="assets/logo-university.png">` লাইনের filename বদলে দাও।
 
 ## ICT dept-এর তথ্য যোগ করবে কীভাবে
 
